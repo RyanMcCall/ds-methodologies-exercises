@@ -5,6 +5,7 @@ import seaborn as sns
 
 def plot_variable_pairs(df):
     sns.pairplot(df, kind='reg', plot_kws={'line_kws':{'color':'orange'}})
+    plt.show()
 
 def months_to_years(months_column, df):
     df['tenure_years'] = (months_column / 12).astype(int)
@@ -17,3 +18,4 @@ def plot_categorical_continuous_vars(categorical_var, continuous_var, df):
     sns.swarmplot(x=categorical_var, y=continuous_var, data=df, color='.2', alpha=.7, ax=axes[0])
     sns.violinplot(x=categorical_var, y=continuous_var, data=df, inner='stick', ax=axes[1])
     sns.barplot(x=categorical_var, y=continuous_var, data=df, ax=axes[2])
+    plt.show()
