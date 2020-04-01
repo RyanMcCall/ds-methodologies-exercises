@@ -2,12 +2,16 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, QuantileTransformer, PowerTransformer, MinMaxScaler, RobustScaler
 
-def split_my_data(X, y, train_pct):
-    '''Takes 3 arguments and return train_X, test_X, train_y, test_y'''
-    return train_test_split(X, y, train_size=train_pct, random_state=13)
+def single_split_my_data(data, train_pct, seed):
+    '''Takes in dataframe, training percentage, and a seed and returns train and test'''
+    return train_test_split(data, train_size=train_pct, random_state=seed)
+
+def double_split_my_data(X, y, train_pct, seed):
+    '''Takes in features, target, training percentage, and a seed and returns train_X, test_X, train_y, test_y'''
+    return train_test_split(X, y, train_size=train_pct, random_state=seed)
 
 def make_scaled_dataframe(scaler, data):
-    '''Takes 2 arguments and returns a scaled dataframe'''
+    '''Takes a scaler and data and returns a scaled dataframe'''
     return pd.DataFrame(scaler.transform(data), columns=data.columns.values).set_index([data.index.values])
 
 def standard_scaler(train, test):
