@@ -30,7 +30,7 @@ def scale_inverse(scaler, train_scaled, test_scaled):
 
 
 def uniform_scaler(train, test):
-    scaler = QuantileTransformer()
+    scaler = QuantileTransformer(output_distribution='uniform')
     scaler.fit(train)
     train_uniform_scaled = make_scaled_dataframe(scaler, train)
     test_uniform_scaled = make_scaled_dataframe(scaler, test)
