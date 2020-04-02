@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def plot_variable_pairs(df):
-    sns.pairplot(df, kind='reg', plot_kws={'line_kws':{'color':'orange'}, 'scatter_kws': {'alpha': 0.5}})
+    sns.pairplot(df, kind='reg', plot_kws={'line_kws':{'color':'orange'}, 'scatter_kws': {'alpha': 0.1}})
     plt.show()
 
 def months_to_years(months_column, df):
