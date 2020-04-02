@@ -17,5 +17,5 @@ def plot_categorical_continuous_vars(categorical_var, continuous_var, df):
     sns.boxplot(x=categorical_var, y=continuous_var, data=df, ax=axes[0])
     sns.swarmplot(x=categorical_var, y=continuous_var, data=df, color='.2', alpha=.7, ax=axes[0])
     sns.violinplot(x=categorical_var, y=continuous_var, data=df, inner='stick', ax=axes[1])
-    sns.barplot(x=categorical_var, y=continuous_var, data=df, ax=axes[2])
+    sns.barplot(x=categorical_var, y=continuous_var, data=df, capsize=.2, ax=axes[2])
     plt.show()
