@@ -8,32 +8,28 @@ from math import sqrt
 import warnings
 warnings.filterwarnings('ignore')
 
-def plot_residuals(y, yhat, df, baseline=False):
-    '''
-    y: string; name of target column
-    yhat: string; name of prediction column
-    df: DataFrame; dataframe that includes previously declared columns
-    baseline: optional bool; If true, will return baseline graph also
-    '''
-    df['residuals'] = df[yhat] - df[y]
-    
-    if baseline:
-        df['baseline'] = df.y.mean()
-        df['baseline_residuals'] = df.baseline - df[y]
-        
-        f, axes = plt.subplots(1, 2, figsize=(8, 4.5))
+def plot_residuals(actual, predicted):
+    residuals = actual - predicted
 
-        sns.scatterplot(x=y, y='baseline_residuals', data=df, ax=axes[0])
-        sns.lineplot(x=range(round(df[y].min()-1), round(df[y].max())+1), y=0, color='green', ax=axes[0])
+    fig, axs = plt.subplots(2, 2, figsize=(12, 12))
+    axs[0, 0].hist(residuals, bins=20, ec='black', fc='white')
+    axs[0, 0].set(title="Distribution of Residuals")
 
-        sns.scatterplot(x=y, y='residuals', data=df, ax=axes[1])
-        sns.lineplot(x=range(round(df[y].min()-1), round(df[y].max())+1), y=0, color='green', ax=axes[1])
+    axs[0, 1].scatter(actual, predicted, marker='.', c='firebrick')
+    axs[0, 1].plot([actual.min(), actual.max()], [actual.min(), actual.max()], ls=':', color='black')
+    axs[0, 1].set(title="Actual vs Predicted", xlabel="$y$", ylabel=r"$\hat{y}$")
 
-        f.tight_layout(pad=2)
-    
-    else:
-        sns.scatterplot(x=y, y='residuals', data=df)
-        sns.lineplot(x=range(round(df[y].min()-1), round(df[y].max())+1), y=0, color='green')
+    axs[1, 0].scatter(actual, residuals, marker='.', c='firebrick')
+    axs[1, 0].hlines(0, actual.min(), actual.max(), ls=':', color='black')
+    axs[1, 0].set(title="Actual vs Residuals", xlabel="$y$", ylabel=r"$y - \hat{y}$")
+
+    axs[1, 1].scatter(predicted, residuals, marker='.', c='firebrick')
+    axs[1, 1].hlines(0, actual.min(), actual.max(), ls=':', color='black')
+    axs[1, 1].set(
+        title="Predicted vs Residuals", xlabel=r"$\hat{y}$", ylabel=r"$y - \hat{y}$"
+    )
+
+    return fig, axs
 
 def regression_errors(y, yhat):
     '''
