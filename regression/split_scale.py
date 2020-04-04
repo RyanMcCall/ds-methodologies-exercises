@@ -15,6 +15,7 @@ def make_scaled_dataframe(scaler, data):
     return pd.DataFrame(scaler.transform(data), columns=data.columns.values).set_index([data.index.values])
 
 def standard_scaler(train, test):
+    '''returns scaler, train_scaled, test_scaled'''
     scaler = StandardScaler()
     scaler.fit(train)
     train_standard_scaled = make_scaled_dataframe(scaler, train)
