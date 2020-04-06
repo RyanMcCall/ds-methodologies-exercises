@@ -15,10 +15,10 @@ def select_kbest(X, y, k):
     f_selector.fit(X, y)
 
     f_support = f_selector.get_support()
-    f_feature = X.loc[:,f_support].columns.tolist()
+    f_feature = X.loc[:,f_support].columns
     return f_feature
 
-def rfe(X, y, k):
+def do_rfe(X, y, k):
     '''
     X: pd.DataFrame; Scaled features
     y: pd.DataFrame; Scaled target
@@ -30,5 +30,5 @@ def rfe(X, y, k):
     rfe = RFE(lm, k)
     rfe.fit(X, y)
 
-    rfe_features = X.loc[:,rfe.support_].columns.tolist()
+    rfe_features = X.loc[:,rfe.support_].columns
     return rfe_features
