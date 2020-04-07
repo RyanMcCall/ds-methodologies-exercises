@@ -3,6 +3,9 @@ import numpy as np
 from env import get_url
 
 def wrangle_telco():
+    '''
+    Returns a dataframe with the cleaned telco data
+    '''
     url = get_url('telco_churn')
 
     query = '''
