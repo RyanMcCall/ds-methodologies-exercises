@@ -24,6 +24,7 @@ def standard_scaler(train, test):
     return scaler, train_standard_scaled, test_standard_scaled
 
 def scale_inverse(scaler, train_scaled, test_scaled):
+    '''returns train_unscaled, test_unscaled'''
     train_unscaled = pd.DataFrame(scaler.inverse_transform(train_scaled), columns=train_scaled.columns.values).set_index([train_scaled.index.values])
     test_unscaled = pd.DataFrame(scaler.inverse_transform(test_scaled), columns=test_scaled.columns.values).set_index([X_test_scaled.index.values])
     
@@ -31,6 +32,7 @@ def scale_inverse(scaler, train_scaled, test_scaled):
 
 
 def uniform_scaler(train, test):
+    '''returns scaler, train_scaled, test_scaled'''
     scaler = QuantileTransformer(output_distribution='uniform')
     scaler.fit(train)
     train_uniform_scaled = make_scaled_dataframe(scaler, train)
@@ -39,6 +41,7 @@ def uniform_scaler(train, test):
     return scaler, train_uniform_scaled, test_uniform_scaled
 
 def gaussian_scaler(train, test):
+    '''returns scaler, train_scaled, test_scaled'''
     scaler = PowerTransformer(method='yeo-johnson')
     scaler.fit(train)
     train_gaussian_scaled = make_scaled_dataframe(scaler, train)
@@ -47,6 +50,7 @@ def gaussian_scaler(train, test):
     return scaler, train_gaussian_scaled, test_gaussian_scaled
 
 def min_max_scaler(train, test):
+    '''returns scaler, train_scaled, test_scaled'''
     scaler = MinMaxScaler()
     scaler.fit(train)
     train_min_max_scaled = make_scaled_dataframe(scaler, train)
@@ -55,6 +59,7 @@ def min_max_scaler(train, test):
     return scaler, train_min_max_scaled, test_min_max_scaled
 
 def iqr_robust_scaler(train, test):
+    '''returns scaler, train_scaled, test_scaled'''
     scaler = RobustScaler()
     scaler.fit(train)
     train_robust_scaled = make_scaled_dataframe(scaler, train)
