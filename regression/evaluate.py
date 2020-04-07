@@ -45,25 +45,27 @@ def rplot_residuals(y, yhat, df, baseline=False):
     df: DataFrame; dataframe that includes previously declared columns
     baseline: optional bool; If true, will return baseline graph also
     '''
-    df['residuals'] = df[yhat] - df[y]
+    new_df = df.copy()
+    
+    new_df['residuals'] = new_df[yhat] - new_df[y]
 
     if baseline:
-        df['baseline'] = df.y.mean()
-        df['baseline_residuals'] = df.baseline - df[y]
+        df['baseline'] = new_df.y.mean()
+        df['baseline_residuals'] = new_df.baseline - new_df[y]
 
         f, axes = plt.subplots(1, 2, figsize=(8, 4.5))
 
-        sns.scatterplot(x=y, y='baseline_residuals', data=df, ax=axes[0])
+        sns.scatterplot(x=y, y='baseline_residuals', data=new_df, ax=axes[0])
         sns.lineplot(x=range(round(df[y].min()-1), round(df[y].max())+1), y=0, color='green', ax=axes[0])
         
-        sns.scatterplot(x=y, y='residuals', data=df, ax=axes[1])
-        sns.lineplot(x=range(round(df[y].min()-1), round(df[y].max())+1), y=0, color='green', ax=axes[1])
+        sns.scatterplot(x=y, y='residuals', data=new_df, ax=axes[1])
+        sns.lineplot(x=range(round(new_df[y].min()-1), round(new_df[y].max())+1), y=0, color='green', ax=axes[1])
 
         f.tight_layout(pad=2)
 
     else:
-        sns.scatterplot(x=y, y='residuals', data=df)
-        sns.lineplot(x=range(round(df[y].min()-1), round(df[y].max())+1), y=0, color='green')
+        sns.scatterplot(x=y, y='residuals', data=new_df)
+        sns.lineplot(x=range(round(new_df[y].min()-1), round(new_df[y].max())+1), y=0, color='green')
 
 def regression_errors(y, yhat):
     '''
