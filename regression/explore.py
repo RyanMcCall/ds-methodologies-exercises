@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def plot_variable_pairs(df):
+    '''
+    Takes in a dataframe and returns nothing
+    '''
     sns.pairplot(df, kind='reg', plot_kws={'line_kws':{'color':'orange'}, 'scatter_kws': {'alpha': 0.1}})
     plt.show()
 
@@ -12,6 +15,11 @@ def months_to_years(months_column, df):
     return df
 
 def plot_categorical_continuous_vars(categorical_var, continuous_var, df):
+    '''
+    categorical_var: string; name of the column with the catagorical variable
+    continuous_var: string; name of the column with the catagorical variable
+    df: pd.DataFrame; a dataframe containing the two variables
+    '''
     f, axes = plt.subplots(3, 1, figsize=(16, 16))
 
     sns.boxplot(x=categorical_var, y=continuous_var, data=df, ax=axes[0])
