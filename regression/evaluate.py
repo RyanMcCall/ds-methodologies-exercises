@@ -8,7 +8,7 @@ from math import sqrt
 import warnings
 warnings.filterwarnings('ignore')
 
-def plot_residuals(actual, predicted):
+def zplot_residuals(actual, predicted):
     residuals = actual - predicted
 
     fig, axs = plt.subplots(2, 2, figsize=(12, 12))
@@ -30,6 +30,40 @@ def plot_residuals(actual, predicted):
     )
 
     return fig, axs
+
+def plot_actual_vs_predicted(actual, predicted, df):
+    plt.scatter(df[actual], df[predicted], marker='.', c='green')
+    plt.plot([df[actual].min(), df[actual].max()], [df[actual].min(), df[actual].max()], ls=':', color='black')
+    plt.title(f"Actual vs Predicted")
+    plt.xlabel(actual)
+    plt.ylabel(predicted)
+
+def rplot_residuals(y, yhat, df, baseline=False):
+    '''
+    y: string; name of target column
+    yhat: string; name of prediction column
+    df: DataFrame; dataframe that includes previously declared columns
+    baseline: optional bool; If true, will return baseline graph also
+    '''
+    df['residuals'] = df[yhat] - df[y]
+
+    if baseline:
+        df['baseline'] = df.y.mean()
+        df['baseline_residuals'] = df.baseline - df[y]
+
+        f, axes = plt.subplots(1, 2, figsize=(8, 4.5))
+
+        sns.scatterplot(x=y, y='baseline_residuals', data=df, ax=axes[0])
+        sns.lineplot(x=range(round(df[y].min()-1), round(df[y].max())+1), y=0, color='green', ax=axes[0])
+        
+        sns.scatterplot(x=y, y='residuals', data=df, ax=axes[1])
+        sns.lineplot(x=range(round(df[y].min()-1), round(df[y].max())+1), y=0, color='green', ax=axes[1])
+
+        f.tight_layout(pad=2)
+
+    else:
+        sns.scatterplot(x=y, y='residuals', data=df)
+        sns.lineplot(x=range(round(df[y].min()-1), round(df[y].max())+1), y=0, color='green')
 
 def regression_errors(y, yhat):
     '''
