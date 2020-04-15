@@ -18,8 +18,8 @@ def iris_encode_species(train, test):
     encoder = LabelEncoder()
     encoder.fit(train.species)
     
-    train.species = encoder.transform(train.species)
-    test.species = encoder.transform(test.species)
+    train['species_encoded'] = encoder.transform(train.species)
+    test['species_encoded'] = encoder.transform(test.species)
     
     return train, test
 
