@@ -61,11 +61,32 @@ def remove_columns(df, cols_to_remove):
     df = df.drop(columns=cols_to_remove)
     return df
 
-def prep_zillow(cols_to_remove=[], prop_required_column=.5, prop_required_row=.75):
+def prep_zillow(cols_to_remove=['calculatedbathnbr', 'heatingorsystemtypeid', 'regionidneighborhood'], prop_required_column=.5, prop_required_row=.75):
     zillow = get_zillow_data()
+    
+    #insure that this is a single unit property
     zillow = zillow[zillow.propertylandusetypeid
                              .isin([261, 262, 263, 264, 266, 268, 273, 276, 279])
                             ]
+    zillow = zillow[(zillow.bedroomcnt > 0) & (zillow.bathroomcnt > 0)]
+    zillow = zillow[zillow.unitcnt == 1.0]
     zillow = remove_columns(zillow, cols_to_remove)
     zillow = handle_missing_values(zillow, prop_required_column, prop_required_row)
+    
+    # Set nulls to specific value
+    zillow.calculatedfinishedsquarefeet[zillow.calculatedfinishedsquarefeet.isna()] = zillow.calculatedfinishedsquarefeet.median()
+    
+    zillow.buildingqualitytypeid = zillow.buildingqualitytypeid.fillna(6)
+    zillow.finishedsquarefeet12 = zillow.finishedsquarefeet12.fillna(1456.0)
+    
+    zillow.lotsizesquarefeet = zillow.lotsizesquarefeet.fillna(zillow.lotsizesquarefeet.median())
+    
+    zillow = zillow.dropna(subset=['propertyzoningdesc', 'regionidcity', 'regionidzip', 'censustractandblock', 'heatingorsystemdesc'])
+    
+    zillow.structuretaxvaluedollarcnt = zillow.structuretaxvaluedollarcnt.fillna(zillow.structuretaxvaluedollarcnt.median())
+    
+    zillow.yearbuilt = zillow.yearbuilt.fillna(zillow.yearbuilt.median())
+    
+    zillow.taxamount = zillow.taxamount.fillna(zillow.taxamount.median())
+    
     return zillow
