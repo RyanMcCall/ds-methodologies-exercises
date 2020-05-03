@@ -92,4 +92,6 @@ def prep_zillow(cols_to_remove=['calculatedbathnbr', 'heatingorsystemtypeid', 'r
     
     zillow.taxamount = zillow.taxamount.fillna(zillow.taxamount.median())
     
+    zillow.unitcnt = zillow.unitcnt.fillna(1.0)
+    
     return zillow
