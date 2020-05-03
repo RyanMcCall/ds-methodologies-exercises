@@ -69,7 +69,6 @@ def prep_zillow(cols_to_remove=['calculatedbathnbr', 'heatingorsystemtypeid', 'r
                              .isin([261, 262, 263, 264, 266, 268, 273, 276, 279])
                             ]
     zillow = zillow[(zillow.bedroomcnt > 0) & (zillow.bathroomcnt > 0)]
-    zillow = zillow[zillow.unitcnt == 1.0]
     zillow = remove_columns(zillow, cols_to_remove)
     zillow = handle_missing_values(zillow, prop_required_column, prop_required_row)
     
@@ -81,7 +80,11 @@ def prep_zillow(cols_to_remove=['calculatedbathnbr', 'heatingorsystemtypeid', 'r
     
     zillow.lotsizesquarefeet = zillow.lotsizesquarefeet.fillna(zillow.lotsizesquarefeet.median())
     
-    zillow = zillow.dropna(subset=['propertyzoningdesc', 'regionidcity', 'regionidzip', 'censustractandblock', 'heatingorsystemdesc'])
+    zillow = zillow.dropna(subset=['regionidcity', 'regionidzip', 'censustractandblock'])
+    
+    zillow.propertyzoningdesc = zillow.propertyzoningdesc.fillna('LAR1')
+    
+    zillow.heatingorsystemdesc = zillow.propertyzoningdesc.fillna('N/A')
     
     zillow.structuretaxvaluedollarcnt = zillow.structuretaxvaluedollarcnt.fillna(zillow.structuretaxvaluedollarcnt.median())
     
