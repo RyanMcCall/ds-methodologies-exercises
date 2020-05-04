@@ -61,6 +61,14 @@ def remove_columns(df, cols_to_remove):
     df = df.drop(columns=cols_to_remove)
     return df
 
+def label_county(row):
+    if row['fips'] == 6037:
+        return 'Los Angeles'
+    elif row['fips'] == 6059:
+        return 'Orange'
+    elif row['fips'] == 6111:
+        return 'Ventura'
+
 def prep_zillow(cols_to_remove=['calculatedbathnbr', 'heatingorsystemtypeid', 'regionidneighborhood'], prop_required_column=.5, prop_required_row=.75):
     zillow = get_zillow_data()
     
@@ -93,5 +101,11 @@ def prep_zillow(cols_to_remove=['calculatedbathnbr', 'heatingorsystemtypeid', 'r
     zillow.taxamount = zillow.taxamount.fillna(zillow.taxamount.median())
     
     zillow.unitcnt = zillow.unitcnt.fillna(1.0)
+    
+    zillow['County'] = zillow.apply(lambda row: label_county(row), axis=1)
+
+    zillow['State'] = 'CA'
+    
+    zillow = zillow.dropna(axis=1)
     
     return zillow
