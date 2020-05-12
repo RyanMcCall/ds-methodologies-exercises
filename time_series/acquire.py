@@ -106,8 +106,6 @@ def get_sales_items_stores():
                       left_on='store', 
                       right_on='store_id').drop(columns='store_id')
     
-    data = data.set_index('sale_id')
-    
     return data
 
 def get_german_power():
